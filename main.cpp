@@ -1,6 +1,5 @@
 #include <iostream>
 #include <vector>
-#include <cmath>
 #include <algorithm>
 #include <numeric>
 
@@ -10,24 +9,23 @@ int main()
     const size_t left = 2;
     const size_t n = 200;
 
-    const size_t a_size = n - left + 1;
-    std::vector<bool> a(a_size, true);
-    std::vector<size_t> natural_numbers(a_size);
-    std::iota(std::begin(natural_numbers), std::end(natural_numbers), left);
+    std::vector<bool> a(n + 1, true);
+    std::vector<size_t> natural_numbers(std::size(a));
+    std::iota(std::begin(natural_numbers), std::end(natural_numbers), 0);
 
-    for (size_t i = left; i < std::sqrt(n); i++)
+    for (size_t i = 2; i * i < n + 1; i++)
     {
         if (a[i])
         {
-            for (size_t j = i * i; j <= n; j += i)
+            for (size_t j = i * i; j < n + 1; j += i)
             {
-                a[j - 2] = false;
+                a[j] = false;
             }
         }
     }
 
     std::vector<size_t> prime_numbers;
-    for (size_t i = 0; i < std::size(natural_numbers); i++)
+    for (size_t i = left; i < std::size(natural_numbers); i++)
     {
         if (a[i])
         {
