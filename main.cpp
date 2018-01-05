@@ -19,7 +19,7 @@ int main()
     {
         if (a[i])
         {
-            for (size_t j = i * i, k = 0; j <= n; k++, j = i * i + k * i)
+            for (size_t j = i * i; j <= n; j += i)
             {
                 a[j - 2] = false;
             }
