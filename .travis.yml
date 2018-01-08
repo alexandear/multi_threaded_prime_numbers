@@ -1,16 +1,15 @@
 dist: trusty
 sudo: required
-compiler: gcc
+language: cpp
 
 addons:
   apt:
     sources:
-    - ubuntu-toolchain-r-test
+      - ubuntu-toolchain-r-test
     packages:
-    - gcc-7
-    - g++-7
+      - g++-7
 
 script:
-  - sudo unlink /usr/bin/gcc && sudo ln -s /usr/bin/gcc-5 /usr/bin/gcc
+  - CXX=/usr/bin/g++-7
   - cmake .
   - cmake --build . -- -j2 
