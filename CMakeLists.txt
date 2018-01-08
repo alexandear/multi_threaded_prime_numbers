@@ -6,5 +6,5 @@ else()
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
-add_executable(prime main.cpp)
+add_executable(prime src/main.cpp)
 set_target_properties(prime PROPERTIES CXX_STANDARD 17)
