@@ -13,3 +13,8 @@ script:
   - CXX=/usr/bin/g++-7 CC=/usr/bin/gcc-7
   - cmake .
   - cmake --build . -- -j2 
+
+notifications:
+  email:
+    on_success: never
+    on_failure: always
