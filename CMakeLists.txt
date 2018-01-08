@@ -6,5 +6,5 @@ else()
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
-add_executable(prime src/main.cpp)
+add_executable(prime src/main.cpp src/PrimeNumberGenerator.cpp)
 set_target_properties(prime PROPERTIES CXX_STANDARD 17)

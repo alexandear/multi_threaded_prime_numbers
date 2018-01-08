@@ -1,29 +1,14 @@
-#include <iostream>
-#include <vector>
-#include <cmath>
+#include "PrimeNumberGenerator.h"
 
-// https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes
+#include <iostream>
+
+using namespace red;
+
 int main()
 {
-    const size_t n = 200;
-
-    std::vector<bool> a(n + 1, true);
-    for (size_t i = 2; i <= std::sqrt(n); i++)
+    auto primeNumbers = PrimeNumberGenerator::Generate(200);
+    for (auto prime : primeNumbers)
     {
-        if (a[i])
-        {
-            for (size_t j = i * i; j <= n; j += i)
-            {
-                a[j] = false;
-            }
-        }
-    }
-
-    for (size_t i = 2; i < std::size(a); i++)
-    {
-        if (a[i])
-        {
-            std::cout << i << ' ';
-        }
+        std::cout << prime << ' ';
     }
 }
