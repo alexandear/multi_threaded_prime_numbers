@@ -1,9 +1,13 @@
 option(ENABLE_COVERAGE "Enable coverage reporting for gcc/clang" FALSE)
 
-if (ENABLE_COVERAGE)
-  add_compile_options(--coverage -O0)
+if (MSVC)
+	add_compile_options(/W4)
+else()
+	add_compile_options(-Wall -Wextra -Wpedantic)
+	if (ENABLE_COVERAGE)
+	  add_compile_options(--coverage -O0)
+	endif()
 endif()
-add_compile_options(-Wall -Wextra -Wpedantic)
 
 add_library(Red PrimeNumberGenerator.cpp)
 set_target_properties(Red PROPERTIES CXX_STANDARD 17)
