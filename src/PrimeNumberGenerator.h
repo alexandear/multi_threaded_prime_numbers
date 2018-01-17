@@ -11,4 +11,4 @@ public:
 
     static std::vector<std::size_t> Generate(unsigned int n);
 };
-}
+} // namespace red

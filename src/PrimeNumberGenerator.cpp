@@ -36,4 +36,4 @@ std::vector<std::size_t> PrimeNumberGenerator::Generate(unsigned int n)
 
     return result;
 }
-}
+} // namespace red
