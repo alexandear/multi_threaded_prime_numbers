@@ -1,0 +1,14 @@
+image:
+  - Visual Studio 2017
+
+clone_folder: c:\projects\multi_threaded_prime_numbers
+
+before_build:
+  - cd c:\projects\multi_threaded_prime_numbers
+  - cmake -G "Visual Studio 15"
+
+build_script:
+  - cmake --build . --config "Debug"
+
+test_script:
+  - ctest -C Debug
