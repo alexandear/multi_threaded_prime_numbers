@@ -144,20 +144,34 @@ void Document::Parse()
 
 void Document::OutData(std::ostream& os, const Tag& tag, std::size_t depth /*= 0*/)
 {
+    if (tag.GetChildren().empty())
+    {
+        os << "<" << tag.GetName() << "/>";
+        os << '\n';
+        return;
+    }
+
+    std::string spacesBegin;
+    for (std::size_t i = 0; i < depth; ++i)
+        spacesBegin.append("  ");
+
     for (const auto& child : tag.GetChildren())
     {
-        std::string spaces;
-        for (std::size_t i = 0; i < depth; ++i)
-            spaces.append("    ");
-
-        os << spaces;
-        os << child->GetName();
+        os << spacesBegin << "<" << child->GetName() << ">";
         std::string value = child->GetValue().ToString();
         if (!value.empty())
-            os << ": " << value;
-
-        os << '\n';
+            os << value;
+        else
+            os << '\n';
         OutData(os, *child, depth + 1);
+    }
+    if (!tag.GetName().empty())
+    {
+        std::string spacesEnd;
+        for (std::size_t i = 0; i < depth - 1; ++i)
+            spacesEnd.append("  ");
+        os << spacesEnd << "<" << tag.GetName() << "/>";
+        os << '\n';
     }
 }
 
