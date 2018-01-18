@@ -9,7 +9,7 @@ else()
 	endif()
 endif()
 
-add_library(Red PrimeNumberGenerator.cpp Xml.cpp)
+add_library(Red PrimeNumberGenerator.cpp Xml.cpp Utils.cpp)
 set_target_properties(Red PROPERTIES CXX_STANDARD 17)
 target_include_directories(Red PUBLIC .)
 if (ENABLE_COVERAGE)

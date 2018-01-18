@@ -2,6 +2,7 @@
 
 #include "PrimeNumberGenerator.h"
 #include "Xml.h"
+#include "Utils.h"
 
 using namespace red;
 
@@ -32,9 +33,13 @@ int main()
         document.GetRoot().GetFirstChild("root")->AddChild(primesTag);
         document.OutputAllData(std::cout);
     }
+    catch (const IfstreamException& e)
+    {
+        std::cerr << "IfstreamException: " << e.what() << '\n';
+    }
     catch (const std::exception& e)
     {
-        std::cerr << "exception: " << e.what() << '\n';
+        std::cerr << "std::exception: " << e.what() << '\n';
     }
     catch (...)
     {

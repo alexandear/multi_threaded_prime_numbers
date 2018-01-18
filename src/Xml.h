@@ -100,17 +100,6 @@ public:
     const std::string& GetContents() const { return m_contents; }
 
 private:
-    class Ifstream : public std::ifstream
-    {
-    public:
-        explicit Ifstream(const std::string& path);
-        ~Ifstream();
-        Ifstream(const Ifstream&) = delete;
-        Ifstream& operator=(const Ifstream&) = delete;
-        Ifstream(Ifstream&&) noexcept = default;
-        Ifstream& operator=(Ifstream&&) noexcept = default;
-    };
-
     std::string m_contents;
 };
 } // namespace xml

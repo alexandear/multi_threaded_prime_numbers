@@ -1,4 +1,5 @@
 #include "Xml.h"
+#include "Utils.h"
 
 #include <utility>
 #include <cctype>
@@ -172,18 +173,8 @@ File::File(const std::string& path)
     }
 
     if (file.bad())
-        throw std::runtime_error("error while reading file");
+        throw IfstreamException("error while reading file");
 }
 
-File::Ifstream::Ifstream(const std::string& path) : std::ifstream(path)
-{
-    if (!is_open())
-        throw std::runtime_error("error while openning file");
-}
-
-File::Ifstream::~Ifstream()
-{
-    close();
-}
 } // namespace xml
 } // namespace red
