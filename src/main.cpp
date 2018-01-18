@@ -1,4 +1,7 @@
 #include <iostream>
+#include <thread>
+#include <mutex>
+#include <set>
 
 #include "PrimeNumberGenerator.h"
 #include "Xml.h"
@@ -6,10 +9,46 @@
 
 using namespace red;
 
+std::recursive_mutex mutex;
+std::vector<std::size_t> sharedContainer;
+
+void Generate(std::size_t low, std::size_t high)
+{
+    try
+    {
+        auto numbers = PrimeNumberGenerator::Generate(low, high);
+        for (auto number : numbers)
+        {
+            std::lock_guard<std::recursive_mutex> lock(mutex);
+            sharedContainer.push_back(number);
+        }
+    }
+    catch (const std::invalid_argument& e)
+    {
+        std::cerr << "std::invalid_argument: " << e.what() << '\n';
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << "std::exception: " << e.what() << '\n';
+    }
+    catch (...)
+    {
+        std::cerr << "unknown exception\n";
+    }
+}
+
 int main()
 {
-    auto primeNumbers = PrimeNumberGenerator::Generate(200);
-    for (auto prime : primeNumbers)
+    std::thread t1(&Generate, 200, 180500);
+    std::thread t2(&Generate, 100, 130600);
+    std::thread t3(&Generate, 200, 180500);
+    std::thread t4(&Generate, 100, 130600);
+    t1.join();
+    t2.join();
+    t3.join();
+    t4.join();
+    std::set<std::size_t> uniquePrimeNumbers(std::begin(sharedContainer), std::end(sharedContainer));
+    for (auto prime : sharedContainer)
     {
         std::cout << prime << ' ';
     }
