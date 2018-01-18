@@ -4,34 +4,32 @@
 #include "Xml.h"
 #include "Utils.h"
 
-using namespace red;
-
 int main()
 {
-    PrimeNumberGenerator generator({PrimeNumberGenerator::Interval{200, 300},
-                                    PrimeNumberGenerator::Interval{100, 400},
-                                    PrimeNumberGenerator::Interval{250, 600}});
-    auto primes = generator.Calculate();
-    for (auto prime : primes)
-        std::cout << prime << ' ';
-    std::cout << '\n';
+    using namespace red;
 
     try
     {
         xml::File file("simple.xml");
         xml::Document document(file.GetContents());
-        auto intervals = document.GetRoot()
-                             .GetFirstChild("root")
-                             ->GetFirstChild("intervals")
-                             ->GetChildren("interval");
-        for (const auto* interval : intervals)
+        auto xmlIntervals = document.GetRoot()
+                                .GetFirstChild("root")
+                                ->GetFirstChild("intervals")
+                                ->GetChildren("interval");
+        std::vector<PrimeNumberGenerator::Interval> intervals;
+        for (const auto* xmlInterval : xmlIntervals)
         {
-            std::cout << "low: " << interval->GetFirstChild("low")->GetValue().ToInt()
-                      << " high: " << interval->GetFirstChild("high")->GetValue().ToInt() << '\n';
+            int low = xmlInterval->GetFirstChild("low")->GetValue().ToInt();
+            int high = xmlInterval->GetFirstChild("high")->GetValue().ToInt();
+            intervals.emplace_back(low, high);
         }
-        auto primesTag =
-            std::make_shared<xml::Tag>("primes", xml::Value("101 103 107 149 743 751"));
+
+        PrimeNumberGenerator generator(intervals);
+        auto primes = generator.Calculate();
+
+        auto primesTag = std::make_shared<xml::Tag>("primes", xml::Value(Join(primes, ' ')));
         document.GetRoot().GetFirstChild("root")->AddChild(primesTag);
+
         document.OutputAllData(std::cout);
     }
     catch (const IfstreamException& e)

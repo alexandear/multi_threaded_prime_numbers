@@ -15,7 +15,7 @@ std::set<std::size_t> PrimeNumberGenerator::Calculate()
     m_generatedNumbers.Clear();
     std::vector<std::thread> threads;
     for (auto interval : m_intervals)
-        threads.emplace_back([&] { GenerateIntoSharedContainer(interval); });
+        threads.emplace_back([=] { GenerateIntoSharedContainer(interval); });
 
     for (auto& th : threads)
         th.join();

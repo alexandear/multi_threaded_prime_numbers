@@ -5,7 +5,7 @@ if(NOT EXISTS ${CATCH_HPP})
   file(DOWNLOAD "https://raw.githubusercontent.com/CatchOrg/Catch2/master/single_include/catch.hpp" ${CATCH_HPP})
 endif()
 
-set(TEST_SOURCES PrimeNumberGeneratorTest.cpp)
+set(TEST_SOURCES CatchConfig.cpp PrimeNumberGeneratorTest.cpp UtilsTest.cpp)
 
 include_directories(${CMAKE_BINARY_DIR}/test ${SOURCE_DIRECTORY})
 add_executable(primeTest ${TEST_SOURCES} ${CMAKE_BINARY_DIR}/test/catch.hpp)
