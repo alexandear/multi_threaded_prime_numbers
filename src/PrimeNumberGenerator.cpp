@@ -2,9 +2,51 @@
 
 #include <cmath>
 #include <stdexcept>
+#include <iostream>
 
 namespace red
 {
+PrimeNumberGenerator::PrimeNumberGenerator(std::vector<Interval> intervals) : m_intervals(std::move(intervals))
+{
+}
+
+std::set<std::size_t> PrimeNumberGenerator::Calculate()
+{
+    m_generatedNumbers.Clear();
+    std::vector<std::thread> threads;
+    for (auto interval : m_intervals)
+        threads.emplace_back([&] { GenerateIntoSharedContainer(interval); });
+
+    for (auto& th : threads)
+        th.join();
+
+    const auto& generatedNumbers = m_generatedNumbers.GetData();
+    std::set<std::size_t> uniquePrimeNumbers(std::begin(generatedNumbers), std::end(generatedNumbers));
+    return uniquePrimeNumbers;;
+}
+
+void PrimeNumberGenerator::GenerateIntoSharedContainer(Interval interval)
+{
+    try
+    {
+        auto numbers = Generate(interval.first, interval.second);
+        for (auto number : numbers)
+            m_generatedNumbers.PushBack(number);
+    }
+    catch (const std::invalid_argument& e)
+    {
+        std::cerr << "std::invalid_argument: " << e.what() << '\n';
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << "std::exception: " << e.what() << '\n';
+    }
+    catch (...)
+    {
+        std::cerr << "unknown exception\n";
+    }
+}
+
 // https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes
 std::vector<std::size_t> PrimeNumberGenerator::Generate(std::size_t low, std::size_t high)
 {
