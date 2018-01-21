@@ -23,7 +23,7 @@ std::set<std::size_t> PrimeNumberGenerator::Calculate()
 
     const auto& generatedNumbers = m_generatedNumbers.GetData();
     std::set<std::size_t> uniquePrimeNumbers(std::begin(generatedNumbers), std::end(generatedNumbers));
-    return uniquePrimeNumbers;;
+    return uniquePrimeNumbers;
 }
 
 void PrimeNumberGenerator::GenerateIntoSharedContainer(Interval interval)
