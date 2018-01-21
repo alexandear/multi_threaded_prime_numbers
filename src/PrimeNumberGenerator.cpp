@@ -3,6 +3,7 @@
 #include <cmath>
 #include <stdexcept>
 #include <iostream>
+#include <thread>
 
 namespace red
 {

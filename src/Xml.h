@@ -4,7 +4,6 @@
 #include <string>
 #include <vector>
 #include <ostream>
-#include <fstream>
 
 namespace red
 {
@@ -29,7 +28,7 @@ class Value
 {
 public:
     Value() = default;
-    explicit Value(std::string value) : m_value(value) {}
+    explicit Value(std::string value) : m_value(std::move(value)) {}
 
     std::string ToString() const { return m_value; }
     int ToInt() const { return std::stoi(m_value); }
@@ -42,7 +41,7 @@ class Tag
 {
 public:
     Tag() : Tag("") {}
-    explicit Tag(std::string name) : Tag(name, Value()) {}
+    explicit Tag(std::string name) : Tag(std::move(name), {}) {}
     Tag(std::string name, Value value);
 
     Tag* GetParent() const { return m_parent; }
@@ -68,7 +67,7 @@ private:
 class Document
 {
 public:
-    explicit Document(const std::string& content);
+    explicit Document(const std::string& contents);
 
     const Tag& GetRoot() const { return m_root; }
     Tag& GetRoot() { return m_root; }
@@ -82,7 +81,7 @@ private:
         OutsideTag,
     };
 
-    void Lexical(const std::string& content);
+    void Lexical(const std::string& contents);
     void AddToken(std::string& text, Token::Type type);
     void Parse();
 

@@ -21,8 +21,8 @@ public:
     ~Ifstream();
     Ifstream(const Ifstream&) = delete;
     Ifstream& operator=(const Ifstream&) = delete;
-    Ifstream(Ifstream&&) noexcept = default;
-    Ifstream& operator=(Ifstream&&) noexcept = default;
+    Ifstream(Ifstream&&) noexcept = delete;
+    Ifstream& operator=(Ifstream&&) noexcept = delete;
 };
 
 template <typename Element>
@@ -54,7 +54,7 @@ std::string Join(const Container& container, char delimiter)
     std::stringstream ss;
     auto it = std::cbegin(container);
     ss << *it++;
-    for (; it != std::cend(container); it++)
+    for (; it != std::cend(container); ++it)
         ss << delimiter << *it;
     return ss.str();
 }
