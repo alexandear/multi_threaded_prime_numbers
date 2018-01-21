@@ -12,7 +12,7 @@ else()
   endif()
 endif()
 
-add_library(Red PrimeNumberGenerator.cpp Xml.cpp Utils.cpp)
+add_library(Red PrimeNumberGenerator.h PrimeNumberGenerator.cpp Xml.h Xml.cpp Utils.h Utils.cpp)
 set_target_properties(Red PROPERTIES CXX_STANDARD 17)
 target_include_directories(Red PUBLIC .)
 if (ENABLE_COVERAGE)
