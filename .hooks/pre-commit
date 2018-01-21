@@ -1,0 +1,13 @@
+#!/bin/sh
+
+PROJECT_DIR="$( git rev-parse --show-toplevel )"
+
+OUTPUT="$( git clang-format )"
+if [ "$OUTPUT" == "no modified files to format" ] || [ "$OUTPUT" == "clang-format did not modify any files" ]
+then
+	exit 0
+fi
+
+echo "git clang-format modified files. Please stage and commit their"
+
+exit 1
