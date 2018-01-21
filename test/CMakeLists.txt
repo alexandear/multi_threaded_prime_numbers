@@ -8,7 +8,7 @@ endif()
 set(TEST_SOURCES CatchConfig.cpp PrimeNumberGeneratorTest.cpp UtilsTest.cpp)
 
 include_directories(${CMAKE_BINARY_DIR}/test ${SOURCE_DIRECTORY})
-add_executable(primeTest ${TEST_SOURCES} ${CMAKE_BINARY_DIR}/test/catch.hpp)
+add_executable(primeTest ${TEST_SOURCES})
 target_link_libraries(primeTest Red)
 set_target_properties(primeTest PROPERTIES CXX_STANDARD 17)
 
