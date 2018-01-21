@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.2)
 
+PROJECT(MultiThreadedPrimeNumbers)
+
 set(SOURCE_DIRECTORY src)
 set(TEST_DIRECTORY test)
 
