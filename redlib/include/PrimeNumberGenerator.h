@@ -4,13 +4,13 @@
 #include <set>
 
 #include "Utils.h"
+#include "Types.h"
 
 namespace red
 {
 class PrimeNumberGenerator
 {
 public:
-    using Interval = std::pair<std::size_t, std::size_t>;
     static constexpr unsigned int MaxN = 10000000;
 
     explicit PrimeNumberGenerator(std::vector<Interval> intervals);

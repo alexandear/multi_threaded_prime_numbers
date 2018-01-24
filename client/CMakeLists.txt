@@ -1,4 +1,4 @@
-project(prime)
+project(client)
 
 file(GLOB_RECURSE APP_SOURCE "*.h" "*.cpp")
 
