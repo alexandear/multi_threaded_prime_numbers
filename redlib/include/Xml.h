@@ -9,6 +9,12 @@ namespace red
 {
 namespace xml
 {
+class Exception : public std::runtime_error
+{
+public:
+    explicit Exception(const char* msg) : std::runtime_error(msg) {}
+};
+
 struct Token
 {
     enum class Type
@@ -85,7 +91,7 @@ public:
     const std::vector<Token>& GetTokens() const { return m_tokens; }
     void OutputAllData(std::ostream& os) const { OutData(os, m_root); }
 
-    Tag* AddRoot(std::shared_ptr<Tag> tag);
+    Tag* AddRoot(std::string name);
 
 private:
     enum class State

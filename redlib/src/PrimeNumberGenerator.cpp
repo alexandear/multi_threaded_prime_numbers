@@ -70,7 +70,7 @@ std::vector<std::size_t> PrimeNumberGenerator::Generate(std::size_t low, std::si
     for (std::size_t i = low; i < std::size(a); i++)
     {
         if (a[i])
-            result.push_back(i);
+            result.emplace_back(i);
     }
 
     return result;

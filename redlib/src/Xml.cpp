@@ -3,6 +3,7 @@
 
 #include <utility>
 #include <cctype>
+#include <algorithm>
 
 namespace red
 {
@@ -22,25 +23,27 @@ void Tag::SetName(std::string name)
 Tag* Tag::AddChild(std::shared_ptr<Tag> tag)
 {
     tag->m_parent = this;
-    m_children.push_back(std::move(tag));
+    m_children.emplace_back(std::move(tag));
     return m_children.back().get();
 }
 
 const Tag* Tag::GetFirstChild() const
 {
     if (m_children.empty())
-        throw std::runtime_error("children are empty");
+        throw Exception("children are empty");
 
     return std::begin(m_children)->get();
 }
 
 const Tag* Tag::GetFirstChild(const std::string& name) const
 {
-    for (const auto& tag : m_children)
-        if (tag->m_name == name)
-            return tag.get();
+    auto it = std::find_if(std::begin(m_children), std::end(m_children), [&name](const auto& tag) {
+        return tag->m_name == name;
+    });
+    if (it == std::end(m_children))
+        throw Exception("child is not found");
 
-    throw std::runtime_error("child is not found");
+    return it->get();
 }
 
 std::vector<Tag*> Tag::GetChildren(const std::string& name) const
@@ -48,8 +51,10 @@ std::vector<Tag*> Tag::GetChildren(const std::string& name) const
     std::vector<Tag*> tags;
 
     for (const auto& tag : m_children)
+    {
         if (tag->m_name == name)
-            tags.push_back(tag.get());
+            tags.emplace_back(tag.get());
+    }
 
     return tags;
 }
@@ -60,9 +65,9 @@ Document::Document(const std::string& contents)
     Parse();
 }
 
-Tag* Document::AddRoot(std::shared_ptr<Tag> tag)
+Tag* Document::AddRoot(std::string name)
 {
-    return m_root.AddChild(std::move(tag));
+    return m_root.AddChild(std::make_shared<Tag>(std::move(name)));
 }
 
 void Document::Lexical(const std::string& contents)
@@ -115,7 +120,7 @@ void Document::Lexical(const std::string& contents)
 
 void Document::AddToken(std::string& text, Token::Type type)
 {
-    m_tokens.push_back(Token{text, type});
+    m_tokens.emplace_back(Token{text, type});
     text.clear();
 }
 

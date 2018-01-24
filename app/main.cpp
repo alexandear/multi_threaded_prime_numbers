@@ -30,7 +30,7 @@ int main()
         auto primes = generator.Calculate();
 
         xml::Document outDocument;
-        xml::Tag* root = outDocument.AddRoot(std::make_shared<xml::Tag>("root"));
+        xml::Tag* root = outDocument.AddRoot("root");
         root->AddChild(std::make_shared<xml::Tag>("primes", xml::Value(Join(primes, ' '))));
 
         std::cout << "Output XML data:\n";
@@ -41,6 +41,10 @@ int main()
     catch (const FstreamException& e)
     {
         std::cerr << "FstreamException: " << e.what() << '\n';
+    }
+    catch (const xml::Exception& e)
+    {
+        std::cerr << "xml::Exception: " << e.what() << '\n';
     }
     catch (const std::exception& e)
     {
