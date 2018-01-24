@@ -12,4 +12,4 @@ add_executable(${PROJECT_NAME} ${APP_SOURCE})
 set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD 17)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC redlib)
 
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/simple.xml ${CMAKE_CURRENT_BINARY_DIR} COPYONLY)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/in.xml ${CMAKE_CURRENT_BINARY_DIR} COPYONLY)

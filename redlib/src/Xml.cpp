@@ -175,20 +175,28 @@ void Document::OutData(std::ostream& os, const Tag& tag, std::size_t depth /*= 0
     }
 }
 
-File::File(const std::string& path)
+Document File::Read(const std::string& path)
 {
     Ifstream file(path);
 
+    std::string contents;
     std::string line;
     while (std::getline(file, line))
     {
         line += '\n';
-        m_contents += line;
+        contents += line;
     }
 
     if (file.bad())
-        throw IfstreamException("error while reading file");
+        throw FstreamException("error while reading file");
+
+    return Document(contents);
 }
 
+void File::Write(const std::string& path, const Document& document)
+{
+    Ofstream file(path);
+    document.OutputAllData(file);
+}
 } // namespace xml
 } // namespace red

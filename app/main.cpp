@@ -10,9 +10,8 @@ int main()
 
     try
     {
-        xml::File file("simple.xml");
-        xml::Document document(file.GetContents());
-        auto xmlIntervals = document.GetRoot()
+        xml::Document inDocument = xml::File::Read("in.xml");
+        auto xmlIntervals = inDocument.GetRoot()
                                 .GetFirstChild("root")
                                 ->GetFirstChild("intervals")
                                 ->GetChildren("interval");
@@ -24,17 +23,24 @@ int main()
             intervals.emplace_back(low, high);
         }
 
+        std::cout << "Input XML data:\n";
+        inDocument.OutputAllData(std::cout);
+
         PrimeNumberGenerator generator(intervals);
         auto primes = generator.Calculate();
 
-        auto primesTag = std::make_shared<xml::Tag>("primes", xml::Value(Join(primes, ' ')));
-        document.GetRoot().GetFirstChild("root")->AddChild(primesTag);
+        xml::Document outDocument;
+        xml::Tag* root = outDocument.GetRoot().AddChild(std::make_shared<xml::Tag>("root"));
+        root->AddChild(std::make_shared<xml::Tag>("primes", xml::Value(Join(primes, ' '))));
 
-        document.OutputAllData(std::cout);
+        std::cout << "Output XML data:\n";
+        outDocument.OutputAllData(std::cout);
+
+        xml::File::Write("out.xml", outDocument);
     }
-    catch (const IfstreamException& e)
+    catch (const FstreamException& e)
     {
-        std::cerr << "IfstreamException: " << e.what() << '\n';
+        std::cerr << "FstreamException: " << e.what() << '\n';
     }
     catch (const std::exception& e)
     {

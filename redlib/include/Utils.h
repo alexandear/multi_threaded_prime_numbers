@@ -9,9 +9,9 @@
 
 namespace red
 {
-struct IfstreamException : std::runtime_error
+struct FstreamException : std::runtime_error
 {
-    explicit IfstreamException(const char* msg) : std::runtime_error(msg) {}
+    explicit FstreamException(const char* msg) : std::runtime_error(msg) {}
 };
 
 class Ifstream : public std::ifstream
@@ -23,6 +23,17 @@ public:
     Ifstream& operator=(const Ifstream&) = delete;
     Ifstream(Ifstream&&) noexcept = delete;
     Ifstream& operator=(Ifstream&&) noexcept = delete;
+};
+
+class Ofstream : public std::ofstream
+{
+public:
+    explicit Ofstream(const std::string& path);
+    ~Ofstream();
+    Ofstream(const Ofstream&) = delete;
+    Ofstream& operator=(const Ofstream&) = delete;
+    Ofstream(Ofstream&&) noexcept = delete;
+    Ofstream& operator=(Ofstream&&) noexcept = delete;
 };
 
 template <typename Element>

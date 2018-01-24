@@ -77,6 +77,7 @@ inline Tag* Tag::GetFirstChild(const std::string& name)
 class Document
 {
 public:
+    Document() = default;
     explicit Document(const std::string& contents);
 
     const Tag& GetRoot() const { return m_root; }
@@ -104,12 +105,8 @@ private:
 class File
 {
 public:
-    explicit File(const std::string& path);
-
-    const std::string& GetContents() const { return m_contents; }
-
-private:
-    std::string m_contents;
+    static Document Read(const std::string& path);
+    static void Write(const std::string& path, const Document& document);
 };
 } // namespace xml
 } // namespace red
