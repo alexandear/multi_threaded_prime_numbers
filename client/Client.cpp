@@ -40,7 +40,7 @@ void Client::SendRecvPrimeNumbers(Interval interval)
 {
     try
     {
-        TCPSocket sock(m_server.first, m_server.second);
+        TCPSocket sock(m_server.GetHost().c_str(), m_server.GetPort());
 
         std::string info =
             "Interval: " + Join(std::vector<std::size_t>{interval.first, interval.second}, ' ');

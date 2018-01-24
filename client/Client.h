@@ -6,6 +6,7 @@
 
 #include "Utils.h"
 #include "Types.h"
+#include "SocketTypes.h"
 
 namespace client
 {

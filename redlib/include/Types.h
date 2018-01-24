@@ -6,6 +6,4 @@
 namespace red
 {
 using Interval = std::pair<std::size_t, std::size_t>;
-
-using SocketAddress = std::pair<std::string, unsigned short>;
 }

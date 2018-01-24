@@ -10,7 +10,7 @@ int main()
 
     try
     {
-        client::Client client("in.xml", std::make_pair("localhost", unsigned short{3000}));
+        client::Client client("in.xml", {"localhost", 3000});
         client.Run();
     }
     catch (const FstreamException& e)
