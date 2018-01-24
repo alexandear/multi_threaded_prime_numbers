@@ -7,7 +7,8 @@
 
 namespace red
 {
-PrimeNumberGenerator::PrimeNumberGenerator(std::vector<Interval> intervals) : m_intervals(std::move(intervals))
+PrimeNumberGenerator::PrimeNumberGenerator(std::vector<Interval> intervals)
+    : m_intervals(std::move(intervals))
 {
 }
 
@@ -22,7 +23,8 @@ std::set<std::size_t> PrimeNumberGenerator::Calculate()
         th.join();
 
     const auto& generatedNumbers = m_generatedNumbers.GetData();
-    std::set<std::size_t> uniquePrimeNumbers(std::begin(generatedNumbers), std::end(generatedNumbers));
+    std::set<std::size_t> uniquePrimeNumbers(std::begin(generatedNumbers),
+                                             std::end(generatedNumbers));
     return uniquePrimeNumbers;
 }
 

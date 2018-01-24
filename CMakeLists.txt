@@ -1,11 +1,7 @@
 cmake_minimum_required(VERSION 3.2)
 
-PROJECT(MultiThreadedPrimeNumbers)
+project(MultiThreadedPrimeNumbers)
 
-set(SOURCE_DIRECTORY src)
-set(TEST_DIRECTORY test)
-
-ADD_SUBDIRECTORY(${SOURCE_DIRECTORY})
-ADD_SUBDIRECTORY(${TEST_DIRECTORY})
-
-include(CTest)
+add_subdirectory(app)
+add_subdirectory(redlib)
+add_subdirectory(test)

@@ -1,3 +1,5 @@
+project(primeTest)
+
 set(CATCH_HPP "${CMAKE_BINARY_DIR}/test/catch.hpp")
 
 if(NOT EXISTS ${CATCH_HPP})
@@ -5,13 +7,21 @@ if(NOT EXISTS ${CATCH_HPP})
   file(DOWNLOAD "https://raw.githubusercontent.com/CatchOrg/Catch2/master/single_include/catch.hpp" ${CATCH_HPP})
 endif()
 
-set(TEST_SOURCES CatchConfig.cpp PrimeNumberGeneratorTest.cpp UtilsTest.cpp)
+file(GLOB_RECURSE TEST_SOURCES "*.h" "*.cpp")
+
+include(CTest)
+
+if (MSVC)
+  add_compile_options(/W4 /WX)
+else()
+  add_compile_options(-Wall -Wextra -Wpedantic)
+endif()
 
 include_directories(${CMAKE_BINARY_DIR}/test ${SOURCE_DIRECTORY})
-add_executable(primeTest ${TEST_SOURCES})
-target_link_libraries(primeTest Red)
-set_target_properties(primeTest PROPERTIES CXX_STANDARD 17)
+add_executable(${PROJECT_NAME} ${TEST_SOURCES})
+target_link_libraries(${PROJECT_NAME} redlib)
+set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD 17)
 
-add_test(PrimeTest primeTest)
+add_test(PrimeTest ${PROJECT_NAME})
 
 enable_testing()

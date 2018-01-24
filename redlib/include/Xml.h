@@ -52,9 +52,9 @@ public:
     void SetValue(Value value) { m_value = std::move(value); }
     Tag* AddChild(std::shared_ptr<Tag> tag);
     const Tag* GetFirstChild() const;
-    Tag* GetFirstChild() { return const_cast<Tag*>(static_cast<const Tag*>(this)->GetFirstChild()); }
+    Tag* GetFirstChild();
     const Tag* GetFirstChild(const std::string& name) const;
-    Tag* GetFirstChild(const std::string& name) { return const_cast<Tag*>(static_cast<const Tag*>(this)->GetFirstChild(name)); }
+    Tag* GetFirstChild(const std::string& name);
     std::vector<Tag*> GetChildren(const std::string& name) const;
 
 private:
@@ -63,6 +63,16 @@ private:
     Tag* m_parent;
     std::vector<std::shared_ptr<Tag>> m_children;
 };
+
+inline Tag* Tag::GetFirstChild()
+{
+    return const_cast<Tag*>(static_cast<const Tag*>(this)->GetFirstChild());
+}
+
+inline Tag* Tag::GetFirstChild(const std::string& name)
+{
+    return const_cast<Tag*>(static_cast<const Tag*>(this)->GetFirstChild(name));
+}
 
 class Document
 {
