@@ -60,6 +60,11 @@ Document::Document(const std::string& contents)
     Parse();
 }
 
+Tag* Document::AddRoot(std::shared_ptr<Tag> tag)
+{
+    return m_root.AddChild(std::move(tag));
+}
+
 void Document::Lexical(const std::string& contents)
 {
     std::string token;

@@ -85,6 +85,8 @@ public:
     const std::vector<Token>& GetTokens() const { return m_tokens; }
     void OutputAllData(std::ostream& os) const { OutData(os, m_root); }
 
+    Tag* AddRoot(std::shared_ptr<Tag> tag);
+
 private:
     enum class State
     {

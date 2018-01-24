@@ -30,7 +30,7 @@ int main()
         auto primes = generator.Calculate();
 
         xml::Document outDocument;
-        xml::Tag* root = outDocument.GetRoot().AddChild(std::make_shared<xml::Tag>("root"));
+        xml::Tag* root = outDocument.AddRoot(std::make_shared<xml::Tag>("root"));
         root->AddChild(std::make_shared<xml::Tag>("primes", xml::Value(Join(primes, ' '))));
 
         std::cout << "Output XML data:\n";
