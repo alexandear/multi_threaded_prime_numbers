@@ -44,7 +44,7 @@ void Server::HandleRequest(std::unique_ptr<TCPSocket> socket) const
         std::cout << "Received interval: " << interval.ToString() << '\n';
 
         auto generator = PrimeNumberGenerator(interval);
-        std::string sendData = generator.ToString();
+        std::string sendData = generator.GetNumbers().ToString();
         socket->send(sendData.c_str(), std::size(sendData));
         std::cout << "Sent numbers: " << sendData << '\n';
     }

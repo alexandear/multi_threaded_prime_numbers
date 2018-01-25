@@ -30,7 +30,7 @@ TEST_CASE("When passed valid document to InputXml returns intervals", "[GetInter
 
 TEST_CASE("When passed valid numbers to OutputXml returns document", "[GetDocument]")
 {
-    std::set<std::size_t> primes = {5, 7, 11, 13, 17, 19, 23, 29, 31};
+    Numbers primes(std::vector<std::size_t>{5, 7, 11, 13, 17, 19, 23, 29, 31});
 
     auto result = client::OutputXml(primes).GetDocument();
 

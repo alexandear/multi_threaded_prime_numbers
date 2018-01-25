@@ -2,8 +2,6 @@
 
 #include <stdexcept>
 
-#include "PrimeNumberGeneratorConstants.h"
-
 namespace red
 {
 Interval::Interval(std::size_t low, std::size_t high) : m_low(low), m_high(high)
@@ -13,7 +11,7 @@ Interval::Interval(std::size_t low, std::size_t high) : m_low(low), m_high(high)
 
 Interval::Interval(const std::string& str) : Interval()
 {
-    auto numbers = Split(str, PrimeNumbersDelimiter);
+    auto numbers = Split(str, ' ');
     if (std::size(numbers) != 2)
         throw std::invalid_argument("must be two numbers");
 
@@ -24,7 +22,7 @@ Interval::Interval(const std::string& str) : Interval()
 
 std::string Interval::ToString() const
 {
-    return std::to_string(m_low) + PrimeNumbersDelimiter + std::to_string(m_high);
+    return std::to_string(m_low) + ' ' + std::to_string(m_high);
 }
 
 void Interval::Init(std::size_t low, std::size_t high)

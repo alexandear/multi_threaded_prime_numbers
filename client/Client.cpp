@@ -7,7 +7,6 @@
 
 #include "Xml.h"
 #include "Socket.h"
-#include "PrimeNumberGeneratorConstants.h"
 
 namespace client
 {
@@ -22,6 +21,7 @@ Client& Client::LoadIntervals(const std::string& filePath)
 
 Client& Client::ReceivePrimesFromServer(const SocketAddress& address)
 {
+    m_receivedPrimeNumbers.clear();
     std::vector<std::thread> threads;
     threads.reserve(std::size(m_intervals));
     for (auto interval : m_intervals)
@@ -51,7 +51,7 @@ void Client::ReceivePrimesFromServerForInterval(const SocketAddress& address, In
             if (bytesReceived == -1)
                 throw SocketException("Unable to read");
         } while (bytesReceived != 0);
-        auto numbers = ParseReceivedData(buffer);
+        Numbers numbers(std::string(std::cbegin(buffer), std::cend(buffer)));
         StorePrimesToSharedContainer(numbers);
     }
     catch (const SocketException& e)
@@ -68,19 +68,7 @@ void Client::ReceivePrimesFromServerForInterval(const SocketAddress& address, In
     }
 }
 
-std::vector<std::size_t> Client::ParseReceivedData(const std::vector<char>& data)
-{
-    auto primes = Split(std::string(std::begin(data), std::end(data)), PrimeNumbersDelimiter);
-    std::vector<std::size_t> result;
-    result.reserve(std::size(primes));
-    std::transform(std::cbegin(primes),
-                   std::cend(primes),
-                   std::back_inserter(result),
-                   [](const std::string& element) { return std::stoul(element); });
-    return result;
-}
-
-void Client::StorePrimesToSharedContainer(const std::vector<std::size_t>& receivedNumbers)
+void Client::StorePrimesToSharedContainer(const Numbers& receivedNumbers)
 {
     std::copy(std::cbegin(receivedNumbers),
               std::cend(receivedNumbers),
@@ -89,7 +77,8 @@ void Client::StorePrimesToSharedContainer(const std::vector<std::size_t>& receiv
 
 Client& Client::SaveUniquePrimes(const std::string& filePath)
 {
-    m_uniquePrimeNumbers = {std::cbegin(m_receivedPrimeNumbers), std::cend(m_receivedPrimeNumbers)};
+    std::set<size_t> unique(std::cbegin(m_receivedPrimeNumbers), std::cend(m_receivedPrimeNumbers));
+    m_uniquePrimeNumbers.assign(std::cbegin(unique), std::cend(unique));
     OutputXml xml(m_uniquePrimeNumbers);
     xml::File::Write(filePath, xml.GetDocument());
 
@@ -109,9 +98,8 @@ InputXml::InputXml(const xml::Document& document)
     }
 }
 
-OutputXml::OutputXml(const std::set<std::size_t>& numbers)
+OutputXml::OutputXml(const Numbers& numbers)
 {
-    std::string primes = Join(numbers, PrimeNumbersDelimiter);
-    m_document.AddRoot(Root)->AddChild(Primes, xml::Value(primes));
+    m_document.AddRoot(Root)->AddChild(Primes, xml::Value(numbers.ToString()));
 }
 } // namespace client

@@ -1,6 +1,5 @@
 #pragma once
 
-#include <set>
 #include <string>
 #include <vector>
 
@@ -8,6 +7,7 @@
 #include "Interval.h"
 #include "SocketTypes.h"
 #include "Xml.h"
+#include "Numbers.h"
 
 namespace client
 {
@@ -18,7 +18,7 @@ public:
 
     const red::SharedVector<std::size_t>& GetReceivedPrimeNumbers() const;
     const std::vector<red::Interval>& GetIntervals() const { return m_intervals; }
-    const std::set<std::size_t>& GetUniquePrimeNumbers() const { return m_uniquePrimeNumbers; }
+    const red::Numbers& GetUniquePrimeNumbers() const { return m_uniquePrimeNumbers; }
 
     Client& LoadIntervals(const std::string& filePath);
     Client& ReceivePrimesFromServer(const red::SocketAddress& address);
@@ -27,13 +27,11 @@ public:
     Client& SaveUniquePrimes(const std::string& filePath);
 
 private:
-    void StorePrimesToSharedContainer(const std::vector<std::size_t>& receivedNumbers);
-
-    static std::vector<std::size_t> ParseReceivedData(const std::vector<char>& data);
+    void StorePrimesToSharedContainer(const red::Numbers& receivedNumbers);
 
     std::vector<red::Interval> m_intervals;
     red::SharedVector<std::size_t> m_receivedPrimeNumbers;
-    std::set<std::size_t> m_uniquePrimeNumbers;
+    red::Numbers m_uniquePrimeNumbers;
 };
 
 inline const red::SharedVector<std::size_t>& Client::GetReceivedPrimeNumbers() const
@@ -61,7 +59,7 @@ private:
 class OutputXml
 {
 public:
-    explicit OutputXml(const std::set<std::size_t>& numbers);
+    explicit OutputXml(const red::Numbers& numbers);
 
     const red::xml::Document& GetDocument() const { return m_document; }
 

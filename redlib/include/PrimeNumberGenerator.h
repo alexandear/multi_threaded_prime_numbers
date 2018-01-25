@@ -3,6 +3,7 @@
 #include <vector>
 
 #include "Interval.h"
+#include "Numbers.h"
 
 namespace red
 {
@@ -13,13 +14,12 @@ public:
 
     explicit PrimeNumberGenerator(Interval interval);
 
-    const std::vector<std::size_t>& GetNumbers() const { return m_primes; }
-    std::string ToString() const;
+    const Numbers& GetNumbers() const { return m_primes; }
 
     // https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes
     static std::vector<std::size_t> Generate(Interval interval);
 
 private:
-    std::vector<std::size_t> m_primes;
+    Numbers m_primes;
 };
 } // namespace red

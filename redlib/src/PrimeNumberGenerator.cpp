@@ -3,16 +3,9 @@
 #include <cmath>
 #include <stdexcept>
 
-#include "PrimeNumberGeneratorConstants.h"
-
 namespace red
 {
 PrimeNumberGenerator::PrimeNumberGenerator(Interval interval) : m_primes(Generate(interval)) {}
-
-std::string PrimeNumberGenerator::ToString() const
-{
-    return Join(m_primes, PrimeNumbersDelimiter);
-}
 
 std::vector<std::size_t> PrimeNumberGenerator::Generate(Interval interval)
 {
