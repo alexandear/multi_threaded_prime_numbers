@@ -7,6 +7,7 @@
 
 #include "Xml.h"
 #include "Socket.h"
+#include "PrimeNumberGeneratorConstants.h"
 
 namespace client
 {
@@ -75,7 +76,7 @@ std::vector<std::size_t> Client::ParseReceivedData(const std::vector<char>& data
     std::transform(std::cbegin(primes),
                    std::cend(primes),
                    std::back_inserter(result),
-                   [](const std::string& element) { return std::stoi(element); });
+                   [](const std::string& element) { return std::stoul(element); });
     return result;
 }
 

@@ -5,7 +5,7 @@
 #include <vector>
 
 #include "Utils.h"
-#include "PrimeNumberGeneratorTypes.h"
+#include "Interval.h"
 #include "SocketTypes.h"
 #include "Xml.h"
 

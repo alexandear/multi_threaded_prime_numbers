@@ -1,10 +1,8 @@
 #pragma once
 
 #include <vector>
-#include <set>
 
-#include "Utils.h"
-#include "PrimeNumberGeneratorTypes.h"
+#include "Interval.h"
 
 namespace red
 {
@@ -13,17 +11,15 @@ class PrimeNumberGenerator
 public:
     static constexpr unsigned int MaxN = 10000000;
 
-    explicit PrimeNumberGenerator(std::vector<Interval> intervals);
+    explicit PrimeNumberGenerator(Interval interval);
 
-    std::set<std::size_t> Calculate();
+    const std::vector<std::size_t>& GetNumbers() const { return m_primes; }
+    std::string ToString() const;
 
     // https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes
     static std::vector<std::size_t> Generate(Interval interval);
 
 private:
-    void GenerateIntoSharedContainer(Interval interval);
-
-    std::vector<Interval> m_intervals;
-    SharedVector<std::size_t> m_generatedNumbers;
+    std::vector<std::size_t> m_primes;
 };
 } // namespace red

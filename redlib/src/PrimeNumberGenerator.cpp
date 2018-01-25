@@ -2,51 +2,16 @@
 
 #include <cmath>
 #include <stdexcept>
-#include <iostream>
-#include <thread>
+
+#include "PrimeNumberGeneratorConstants.h"
 
 namespace red
 {
-PrimeNumberGenerator::PrimeNumberGenerator(std::vector<Interval> intervals)
-    : m_intervals(std::move(intervals))
+PrimeNumberGenerator::PrimeNumberGenerator(Interval interval) : m_primes(Generate(interval)) {}
+
+std::string PrimeNumberGenerator::ToString() const
 {
-}
-
-std::set<std::size_t> PrimeNumberGenerator::Calculate()
-{
-    m_generatedNumbers.clear();
-    std::vector<std::thread> threads;
-    for (auto interval : m_intervals)
-        threads.emplace_back([=] { GenerateIntoSharedContainer(interval); });
-
-    for (auto& th : threads)
-        th.join();
-
-    std::set<std::size_t> uniquePrimeNumbers(std::cbegin(m_generatedNumbers),
-                                             std::cend(m_generatedNumbers));
-    return uniquePrimeNumbers;
-}
-
-void PrimeNumberGenerator::GenerateIntoSharedContainer(Interval interval)
-{
-    try
-    {
-        auto numbers = Generate(interval);
-        for (auto number : numbers)
-            m_generatedNumbers.push_back(number);
-    }
-    catch (const std::invalid_argument& e)
-    {
-        std::cerr << "std::invalid_argument: " << e.what() << '\n';
-    }
-    catch (const std::exception& e)
-    {
-        std::cerr << "std::exception: " << e.what() << '\n';
-    }
-    catch (...)
-    {
-        std::cerr << "unknown exception\n";
-    }
+    return Join(m_primes, PrimeNumbersDelimiter);
 }
 
 std::vector<std::size_t> PrimeNumberGenerator::Generate(Interval interval)
