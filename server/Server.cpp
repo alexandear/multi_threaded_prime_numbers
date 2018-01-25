@@ -16,11 +16,11 @@ void Server::Run()
 {
     try
     {
-        TCPServerSocket socket(m_port);
+        TcpServerSocket socket(m_port);
 
         for (;;)
         {
-            auto clientSocket = std::unique_ptr<TCPSocket>(socket.accept());
+            auto clientSocket = std::unique_ptr<TcpSocket>(socket.Accept());
 
             std::thread thread([&]() { HandleRequest(std::move(clientSocket)); });
             thread.join();
@@ -32,20 +32,20 @@ void Server::Run()
     }
 }
 
-void Server::HandleRequest(std::unique_ptr<TCPSocket> socket) const
+void Server::HandleRequest(std::unique_ptr<TcpSocket> socket) const
 {
     try
     {
         constexpr int BufferSize = 1024;
         std::vector<char> buffer(BufferSize);
-        socket->recv(buffer.data(), std::size(buffer));
+        socket->Recv(buffer.data(), std::size(buffer));
 
         Interval interval(std::string(std::begin(buffer), std::end(buffer)));
         std::cout << "Received interval: " << interval.ToString() << '\n';
 
         auto generator = PrimeNumberGenerator(interval);
         std::string sendData = generator.GetNumbers().ToString();
-        socket->send(sendData.c_str(), std::size(sendData));
+        socket->Send(sendData.c_str(), std::size(sendData));
         std::cout << "Sent numbers: " << sendData << '\n';
     }
     catch (const SocketException& e)

@@ -4,7 +4,7 @@
 
 namespace red
 {
-class TCPSocket;
+class TcpSocket;
 }
 
 namespace server
@@ -15,7 +15,7 @@ public:
     explicit Server(int port) : m_port(static_cast<unsigned short>(port)) {}
 
     void Run();
-    void HandleRequest(std::unique_ptr<red::TCPSocket> socket) const;
+    void HandleRequest(std::unique_ptr<red::TcpSocket> socket) const;
 
 private:
     unsigned short m_port;

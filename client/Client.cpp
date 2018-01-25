@@ -37,17 +37,17 @@ void Client::ReceivePrimesFromServerForInterval(const SocketAddress& address, In
 {
     try
     {
-        TCPSocket sock(address.GetHost(), address.GetPort());
+        TcpSocket sock(address.GetHost(), address.GetPort());
 
         std::string info = interval.ToString();
-        sock.send(info.c_str(), std::size(info));
+        sock.Send(info.c_str(), std::size(info));
 
         constexpr int BufferSize = 1024;
         std::vector<char> buffer(BufferSize);
         int bytesReceived;
         do
         {
-            bytesReceived = sock.recv(buffer.data(), std::size(buffer));
+            bytesReceived = sock.Recv(buffer.data(), std::size(buffer));
             if (bytesReceived == -1)
                 throw SocketException("Unable to read");
         } while (bytesReceived != 0);
