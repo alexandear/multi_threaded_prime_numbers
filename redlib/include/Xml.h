@@ -57,6 +57,8 @@ public:
     void SetName(std::string name);
     void SetValue(Value value) { m_value = std::move(value); }
     Tag* AddChild(std::shared_ptr<Tag> tag);
+    Tag* AddChild(std::string tagName);
+    Tag* AddChild(std::string tagName, Value value);
     const Tag* GetFirstChild() const;
     Tag* GetFirstChild();
     const Tag* GetFirstChild(const std::string& name) const;

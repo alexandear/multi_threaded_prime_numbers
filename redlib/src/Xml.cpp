@@ -27,6 +27,16 @@ Tag* Tag::AddChild(std::shared_ptr<Tag> tag)
     return m_children.back().get();
 }
 
+Tag* Tag::AddChild(std::string tagName)
+{
+    return AddChild(std::make_shared<Tag>(std::move(tagName)));
+}
+
+Tag* Tag::AddChild(std::string tagName, Value value)
+{
+    return AddChild(std::make_shared<Tag>(std::move(tagName), std::move(value)));
+}
+
 const Tag* Tag::GetFirstChild() const
 {
     if (m_children.empty())
@@ -156,7 +166,7 @@ void Document::OutData(std::ostream& os, const Tag& tag, std::size_t depth /*= 0
 {
     if (tag.GetChildren().empty())
     {
-        os << "<" << tag.GetName() << "/>";
+        os << "</" << tag.GetName() << ">";
         os << '\n';
         return;
     }
@@ -180,7 +190,7 @@ void Document::OutData(std::ostream& os, const Tag& tag, std::size_t depth /*= 0
         std::string spacesEnd;
         for (std::size_t i = 0; i < depth - 1; ++i)
             spacesEnd.append("  ");
-        os << spacesEnd << "<" << tag.GetName() << "/>";
+        os << spacesEnd << "</" << tag.GetName() << ">";
         os << '\n';
     }
 }
@@ -192,10 +202,7 @@ Document File::Read(const std::string& path)
     std::string contents;
     std::string line;
     while (std::getline(file, line))
-    {
-        line += '\n';
-        contents += line;
-    }
+        contents += line + '\n';
 
     if (file.bad())
         throw FstreamException("error while reading file");
