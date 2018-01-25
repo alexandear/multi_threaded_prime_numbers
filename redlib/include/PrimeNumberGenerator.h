@@ -4,7 +4,7 @@
 #include <set>
 
 #include "Utils.h"
-#include "Types.h"
+#include "PrimeNumberGeneratorTypes.h"
 
 namespace red
 {
@@ -17,7 +17,8 @@ public:
 
     std::set<std::size_t> Calculate();
 
-    static std::vector<std::size_t> Generate(std::size_t low, std::size_t high);
+    // https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes
+    static std::vector<std::size_t> Generate(Interval interval);
 
 private:
     void GenerateIntoSharedContainer(Interval interval);

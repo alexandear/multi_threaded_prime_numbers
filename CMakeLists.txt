@@ -5,3 +5,5 @@ project(MultiThreadedPrimeNumbers)
 add_subdirectory(client)
 add_subdirectory(redlib)
 add_subdirectory(test)
+
+include(CTest)

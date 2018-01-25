@@ -14,7 +14,7 @@ PrimeNumberGenerator::PrimeNumberGenerator(std::vector<Interval> intervals)
 
 std::set<std::size_t> PrimeNumberGenerator::Calculate()
 {
-    m_generatedNumbers.Clear();
+    m_generatedNumbers.clear();
     std::vector<std::thread> threads;
     for (auto interval : m_intervals)
         threads.emplace_back([=] { GenerateIntoSharedContainer(interval); });
@@ -22,9 +22,8 @@ std::set<std::size_t> PrimeNumberGenerator::Calculate()
     for (auto& th : threads)
         th.join();
 
-    const auto& generatedNumbers = m_generatedNumbers.GetData();
-    std::set<std::size_t> uniquePrimeNumbers(std::begin(generatedNumbers),
-                                             std::end(generatedNumbers));
+    std::set<std::size_t> uniquePrimeNumbers(std::cbegin(m_generatedNumbers),
+                                             std::cend(m_generatedNumbers));
     return uniquePrimeNumbers;
 }
 
@@ -32,9 +31,9 @@ void PrimeNumberGenerator::GenerateIntoSharedContainer(Interval interval)
 {
     try
     {
-        auto numbers = Generate(interval.first, interval.second);
+        auto numbers = Generate(interval);
         for (auto number : numbers)
-            m_generatedNumbers.PushBack(number);
+            m_generatedNumbers.push_back(number);
     }
     catch (const std::invalid_argument& e)
     {
@@ -50,10 +49,11 @@ void PrimeNumberGenerator::GenerateIntoSharedContainer(Interval interval)
     }
 }
 
-// https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes
-std::vector<std::size_t> PrimeNumberGenerator::Generate(std::size_t low, std::size_t high)
+std::vector<std::size_t> PrimeNumberGenerator::Generate(Interval interval)
 {
-    if (high > MaxN || low > high || low < 2)
+    std::size_t low = interval.GetLow();
+    std::size_t high = interval.GetHigh();
+    if (high > MaxN || low < 2)
         throw std::invalid_argument("high > MaxN or low > high or low < 2");
 
     std::vector<bool> a(high + 1, true);
@@ -66,7 +66,7 @@ std::vector<std::size_t> PrimeNumberGenerator::Generate(std::size_t low, std::si
         }
     }
 
-    std::vector<size_t> result;
+    std::vector<std::size_t> result;
     for (std::size_t i = low; i < std::size(a); i++)
     {
         if (a[i])

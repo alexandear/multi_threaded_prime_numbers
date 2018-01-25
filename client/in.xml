@@ -5,7 +5,11 @@
      <high>200</high>
    </interval>
    <interval>
-      <low>500</low>
+     <low>150</low>
+     <high>450</high>
+   </interval>
+   <interval>
+      <low>400</low>
       <high>888</high>
     </interval>
   </intervals>

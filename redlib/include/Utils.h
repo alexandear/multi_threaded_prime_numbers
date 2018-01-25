@@ -6,6 +6,7 @@
 #include <vector>
 #include <mutex>
 #include <sstream>
+#include <iterator>
 
 namespace red
 {
@@ -40,9 +41,14 @@ template <typename Element>
 class SharedVector
 {
 public:
-    const std::vector<Element>& GetData() const { return m_data; }
-    void PushBack(Element element);
-    void Clear() { m_data.clear(); }
+    using value_type = Element;
+
+    void push_back(Element element);
+    void clear() { m_data.clear(); }
+
+    auto begin() const noexcept { return std::begin(m_data); }
+    auto end() const noexcept { return std::end(m_data); }
+    bool empty() const noexcept { return std::empty(m_data); }
 
 private:
     std::recursive_mutex m_mutex;
@@ -50,7 +56,7 @@ private:
 };
 
 template <typename Element>
-void SharedVector<Element>::PushBack(Element element)
+void SharedVector<Element>::push_back(Element element)
 {
     std::lock_guard<std::recursive_mutex> lock(m_mutex);
     m_data.push_back(element);
