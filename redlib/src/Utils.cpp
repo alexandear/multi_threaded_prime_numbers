@@ -23,4 +23,11 @@ Ofstream::~Ofstream()
 {
     close();
 }
+
+std::vector<std::string> Split(const std::string& str, char delimiter)
+{
+    std::vector<std::string> result;
+    Split(str, delimiter, std::back_inserter(result));
+    return result;
+}
 } // namespace red

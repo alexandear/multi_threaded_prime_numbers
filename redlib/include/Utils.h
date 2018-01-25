@@ -69,4 +69,15 @@ std::string Join(const Container& container, char delimiter)
         ss << delimiter << *it;
     return ss.str();
 }
+
+template <typename Iterator>
+void Split(const std::string& str, char delimiter, Iterator result)
+{
+    std::stringstream ss(str);
+    std::string item;
+    while (std::getline(ss, item, delimiter))
+        *(result++) = item;
+}
+
+std::vector<std::string> Split(const std::string& str, char delimiter);
 } // namespace red
