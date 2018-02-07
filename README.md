@@ -1,4 +1,4 @@
-# Multi Threaded Prime Numbers
+# Client Server Prime Numbers
 
 [![Build Status](https://travis-ci.org/alexandear/multi_threaded_prime_numbers.svg?branch=master)](https://travis-ci.org/alexandear/multi_threaded_prime_numbers)
 [![Build status](https://ci.appveyor.com/api/projects/status/kpl6belbl8lo4lbd/branch/master?svg=true)](https://ci.appveyor.com/project/alexandear/multi-threaded-prime-numbers/branch/master)
