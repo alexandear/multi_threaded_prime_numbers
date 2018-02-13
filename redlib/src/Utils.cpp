@@ -1,5 +1,7 @@
 #include "Utils.h"
 
+#include <iostream>
+
 namespace red
 {
 Ifstream::Ifstream(const std::string& path) : std::ifstream(path)
@@ -10,7 +12,14 @@ Ifstream::Ifstream(const std::string& path) : std::ifstream(path)
 
 Ifstream::~Ifstream()
 {
-    close();
+    try
+    {
+        close();
+    }
+    catch (const failure& e)
+    {
+        std::cerr << "std::ios_base::failure: " << e.what() << "\n";
+    }
 }
 
 Ofstream::Ofstream(const std::string& path) : std::ofstream(path)
@@ -21,7 +30,14 @@ Ofstream::Ofstream(const std::string& path) : std::ofstream(path)
 
 Ofstream::~Ofstream()
 {
-    close();
+    try
+    {
+        close();
+    }
+    catch (const failure& e)
+    {
+        std::cerr << "std::ios_base::failure: " << e.what() << "\n";
+    }
 }
 
 std::vector<std::string> Split(const std::string& str, char delimiter)
