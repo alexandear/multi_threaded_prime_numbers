@@ -20,4 +20,4 @@ std::string Numbers::ToString() const
 {
     return Join(*this, ' ');
 }
-}
+} // namespace red

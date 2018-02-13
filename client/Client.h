@@ -69,4 +69,4 @@ private:
 
     red::xml::Document m_document;
 };
-}
+} // namespace client

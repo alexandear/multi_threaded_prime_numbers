@@ -32,4 +32,4 @@ void Numbers::Assign(Iter first, Iter last)
 {
     m_data.assign(first, last);
 }
-}
+} // namespace red

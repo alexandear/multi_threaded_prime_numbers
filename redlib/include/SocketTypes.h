@@ -21,4 +21,4 @@ inline SocketAddress::SocketAddress(std::string host, int port)
     : m_host(std::move(host)), m_port(static_cast<unsigned short>(port))
 {
 }
-}
+} // namespace red
