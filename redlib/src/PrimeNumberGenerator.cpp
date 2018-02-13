@@ -25,6 +25,7 @@ std::vector<std::size_t> PrimeNumberGenerator::Generate(Interval interval)
     }
 
     std::vector<std::size_t> result;
+    result.reserve(std::size(a));
     for (std::size_t i = low; i < std::size(a); i++)
     {
         if (a[i])
