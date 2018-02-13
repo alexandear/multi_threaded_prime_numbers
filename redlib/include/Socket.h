@@ -14,7 +14,7 @@ public:
 class Socket
 {
 public:
-    ~Socket();
+    virtual ~Socket();
     Socket(const Socket&) = delete;
     void operator=(const Socket&) = delete;
     Socket(Socket&&) noexcept = delete;
