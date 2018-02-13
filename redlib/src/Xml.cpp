@@ -139,7 +139,7 @@ void Document::Parse()
     Tag* parentTag = &m_root;
     std::shared_ptr<Tag> currentTag;
 
-    for (Token token : m_tokens)
+    for (const auto& token : m_tokens)
     {
         switch (token.type)
         {
@@ -151,10 +151,12 @@ void Document::Parse()
             parentTag = parentTag->GetParent();
             break;
         case Token::Type::TagName:
-            currentTag->SetName(token.content);
+            if (currentTag)
+                currentTag->SetName(token.content);
             break;
         case Token::Type::TagContent:
-            currentTag->SetValue(Value(token.content));
+            if (currentTag)
+                currentTag->SetValue(Value(token.content));
             break;
         case Token::Type::TagEnd:
             break;
