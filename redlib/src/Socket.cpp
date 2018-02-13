@@ -169,6 +169,11 @@ TcpSocket::TcpSocket(const std::string& foreignAddress, unsigned short foreignPo
     Connect(foreignAddress, foreignPort);
 }
 
+TcpSocket* TcpSocket::Create(int newConnSd)
+{
+    return new TcpSocket(newConnSd);
+}
+
 TcpSocket::TcpSocket(int newConnSd) : CommunicatingSocket(newConnSd) {}
 
 TcpServerSocket::TcpServerSocket(unsigned short localPort, int queueLen)
@@ -184,7 +189,7 @@ TcpSocket* TcpServerSocket::Accept()
     if ((newConnSd = ::accept(m_sockDesc, nullptr, nullptr)) < 0)
         throw SocketException("Accept failed (Accept())");
 
-    return new TcpSocket(newConnSd);
+    return TcpSocket::Create(newConnSd);
 }
 
 void TcpServerSocket::SetListen(int queueLen)

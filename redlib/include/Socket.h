@@ -53,10 +53,10 @@ public:
     TcpSocket();
     TcpSocket(const std::string& foreignAddress, unsigned short foreignPort);
 
+    static TcpSocket* Create(int newConnSd);
+
 private:
     explicit TcpSocket(int newConnSd);
-
-    friend class TcpServerSocket;
 };
 
 class TcpServerSocket : public Socket
