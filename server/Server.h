@@ -5,19 +5,19 @@
 namespace red
 {
 class TcpSocket;
-}
+} // namespace red
 
 namespace server
 {
 class Server
 {
 public:
-    explicit Server(int port) : m_port(static_cast<unsigned short>(port)) {}
+    explicit Server(int port) : m_port(static_cast<uint16_t>(port)) {}
 
     void Run();
     void HandleRequest(std::unique_ptr<red::TcpSocket> socket) const;
 
 private:
-    unsigned short m_port;
+    uint16_t m_port;
 };
 } // namespace server

@@ -26,26 +26,13 @@ namespace red
 {
 SocketException::SocketException(const std::string& msg) : runtime_error(msg.c_str()) {}
 
-static void FillAddr(const std::string& address, unsigned short port, sockaddr_in& addr)
-{
-    addr = {};
-    addr.sin_family = AF_INET;
-
-    hostent* host;
-    if ((host = gethostbyname(address.c_str())) == nullptr)
-        throw SocketException("Failed to resolve name (gethostbyname())");
-    addr.sin_addr.s_addr = *reinterpret_cast<unsigned long*>(host->h_addr_list[0]);
-
-    addr.sin_port = htons(port);
-}
-
 Socket::Socket(int type, int protocol)
 {
 #ifdef WIN32
     static bool initialized = false;
     if (!initialized)
     {
-        WSADATA wsaData;
+        WSADATA wsaData{};
 
         WORD wVersionRequested = MAKEWORD(2, 0);
         if (WSAStartup(wVersionRequested, &wsaData) != 0)
@@ -81,7 +68,7 @@ std::string Socket::GetLocalAddress() const
     return inet_ntoa(addr.sin_addr);
 }
 
-unsigned short Socket::GetLocalPort() const
+uint16_t Socket::GetLocalPort() const
 {
     sockaddr_in addr{};
     unsigned int addrLen = sizeof(addr);
@@ -94,7 +81,7 @@ unsigned short Socket::GetLocalPort() const
     return ntohs(addr.sin_port);
 }
 
-void Socket::SetLocalPort(unsigned short localPort)
+void Socket::SetLocalPort(uint16_t localPort)
 {
     sockaddr_in localAddr{};
     memset(&localAddr, 0, sizeof(localAddr));
@@ -110,10 +97,17 @@ CommunicatingSocket::CommunicatingSocket(int type, int protocol) : Socket(type, 
 
 CommunicatingSocket::CommunicatingSocket(int newConnSD) : Socket(newConnSD) {}
 
-void CommunicatingSocket::Connect(const std::string& foreignAddress, unsigned short foreignPort)
+void CommunicatingSocket::Connect(const std::string& foreignAddress, uint16_t foreignPort)
 {
     sockaddr_in destAddr{};
-    FillAddr(foreignAddress, foreignPort, destAddr);
+    destAddr.sin_family = AF_INET;
+
+    hostent* host;
+    if ((host = gethostbyname(foreignAddress.c_str())) == nullptr)
+        throw SocketException("Failed to resolve name (gethostbyname())");
+    destAddr.sin_addr.s_addr = *reinterpret_cast<unsigned long*>(host->h_addr_list[0]);
+
+    destAddr.sin_port = htons(foreignPort);
 
     // Try to Connect to the given port
     if (::connect(m_sockDesc, reinterpret_cast<sockaddr*>(&destAddr), sizeof(destAddr)) < 0)
@@ -148,7 +142,7 @@ std::string CommunicatingSocket::GetForeignAddress() const
     return inet_ntoa(addr.sin_addr);
 }
 
-unsigned short CommunicatingSocket::GetForeignPort() const
+uint16_t CommunicatingSocket::GetForeignPort() const
 {
     sockaddr_in addr{};
     unsigned int addrLen = sizeof(addr);
@@ -163,7 +157,7 @@ unsigned short CommunicatingSocket::GetForeignPort() const
 
 TcpSocket::TcpSocket() : CommunicatingSocket(SOCK_STREAM, IPPROTO_TCP) {}
 
-TcpSocket::TcpSocket(const std::string& foreignAddress, unsigned short foreignPort)
+TcpSocket::TcpSocket(const std::string& foreignAddress, uint16_t foreignPort)
     : CommunicatingSocket(SOCK_STREAM, IPPROTO_TCP)
 {
     Connect(foreignAddress, foreignPort);
@@ -176,7 +170,7 @@ TcpSocket* TcpSocket::Create(int newConnSd)
 
 TcpSocket::TcpSocket(int newConnSd) : CommunicatingSocket(newConnSd) {}
 
-TcpServerSocket::TcpServerSocket(unsigned short localPort, int queueLen)
+TcpServerSocket::TcpServerSocket(uint16_t localPort, int queueLen)
     : Socket(SOCK_STREAM, IPPROTO_TCP)
 {
     SetLocalPort(localPort);

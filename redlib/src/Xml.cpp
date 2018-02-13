@@ -87,7 +87,7 @@ void Document::Lexical(const std::string& contents)
 
     for (auto it = std::cbegin(contents); it != std::cend(contents); ++it)
     {
-        if (std::isspace(*it))
+        if (std::isspace(*it) != 0)
             continue;
 
         token += *it;

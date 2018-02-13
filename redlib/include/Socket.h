@@ -21,9 +21,9 @@ public:
     Socket& operator=(Socket&&) noexcept = delete;
 
     std::string GetLocalAddress() const;
-    unsigned short GetLocalPort() const;
+    uint16_t GetLocalPort() const;
 
-    void SetLocalPort(unsigned short localPort);
+    void SetLocalPort(uint16_t localPort);
 
 protected:
     Socket(int type, int protocol);
@@ -36,9 +36,9 @@ class CommunicatingSocket : public Socket
 {
 public:
     std::string GetForeignAddress() const;
-    unsigned short GetForeignPort() const;
+    uint16_t GetForeignPort() const;
 
-    void Connect(const std::string& foreignAddress, unsigned short foreignPort);
+    void Connect(const std::string& foreignAddress, uint16_t foreignPort);
     void Send(const void* buffer, int bufferLen);
     int Recv(void* buffer, int bufferLen);
 
@@ -51,7 +51,7 @@ class TcpSocket : public CommunicatingSocket
 {
 public:
     TcpSocket();
-    TcpSocket(const std::string& foreignAddress, unsigned short foreignPort);
+    TcpSocket(const std::string& foreignAddress, uint16_t foreignPort);
 
     static TcpSocket* Create(int newConnSd);
 
@@ -62,7 +62,7 @@ private:
 class TcpServerSocket : public Socket
 {
 public:
-    explicit TcpServerSocket(unsigned short localPort, int queueLen = 5);
+    explicit TcpServerSocket(uint16_t localPort, int queueLen = 5);
 
     TcpSocket* Accept();
 
