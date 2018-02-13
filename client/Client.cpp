@@ -78,7 +78,7 @@ void Client::StorePrimesToSharedContainer(const Numbers& receivedNumbers)
 Client& Client::SaveUniquePrimes(const std::string& filePath)
 {
     std::set<size_t> unique(std::cbegin(m_receivedPrimeNumbers), std::cend(m_receivedPrimeNumbers));
-    m_uniquePrimeNumbers.assign(std::cbegin(unique), std::cend(unique));
+    m_uniquePrimeNumbers.Assign(std::cbegin(unique), std::cend(unique));
     OutputXml xml(m_uniquePrimeNumbers);
     xml::File::Write(filePath, xml.GetDocument());
 
